@@ -1,8 +1,6 @@
 # TiledC
 
-Overview
-
-The most straightforward way to analyse Tiled-C data is to use the HiCPro pipeline (Servant et al. Genome Biol 2015. https://github.com/nservant/HiC-Pro) with the options for Capture-Hi-C analysis. 
+The most straightforward way to analyse Tiled-C data is to use the Hi-CPro pipeline (Servant et al. Genome Biol 2015; https://github.com/nservant/HiC-Pro) with the options for Capture-Hi-C analysis. 
 
 It is also possible to analyse Tiled-C data using a combination of the CCseqBasic pipeline, custom scripts and ICE normalisation. Instructions for this approach are described below. 
 
@@ -31,7 +29,14 @@ samtools view -h /path_to_F6_folder/name_COMBINED_reported_capture_reads_CM5.bam
 
 B) Convert sam file to raw sparse contact matrix:
 
-Use script TiledC_sam2rawmatrix.pl. Instructions can be found in the comment lines in the script. This script also outputs a bed file that specifies the coordinates of each bin number. 
+Use script TiledC_sam2rawmatrix.pl. This script needs 2 input files:
+- The sam file created in the previous step
+- A file containing the coordinates of the restriction fragments in the genome you’re analysing, see 
+mm9_dpnII_coordinates_head.txt for an example containing the first 10 lines of such a file
+
+Further instructions can be found in the comment lines in the script. 
+
+This script generates a raw matrix and a bed file which specifies the coordinates of each bin number. 
 
 Example:
 
@@ -39,7 +44,7 @@ nohup perl /path/TiledC_sam2rawmatrix.pl -sam /path/name_COMBINED_reported_captu
 
 Step 3: ICE normalisation (Imakaev et al. Nature Methods, 2012)
 
-The TiledC_sam2rawmatrix.pl creates a matrix in a specific directory hierarchy that is compatible with the HiC-Pro pipeline. You can therefore use HiC-Pro to perform ICE normalisation.
+The TiledC_sam2rawmatrix.pl creates a matrix in a specific directory hierarchy which is compatible with the HiC-Pro pipeline. You can therefore use HiC-Pro to perform ICE normalisation.
 
 HiC-Pro documentation:
 https://github.com/nservant/HiC-Pro
