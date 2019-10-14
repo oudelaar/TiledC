@@ -275,7 +275,9 @@ my $output_file = "$dir/tiled_$name\_$bin_size.matrix";
 open (OUT, ">$output_file") or die "can't open output file $output_file";
 foreach my $X (sort { $a <=> $b } keys %bin_hash ) {
     foreach my $Y (sort { $a <=> $b } keys %{$bin_hash{$X}} ) {
-        print OUT "$X\t$Y\t$bin_hash{$X}{$Y}\n";
+        if ($X >= 0 and $Y >= 0) {
+            print OUT "$X\t$Y\t$bin_hash{$X}{$Y}\n";
+        }
     }
 }
 
@@ -287,7 +289,7 @@ open (BED, ">$bed_file") or die "can't open output report file $bed_file";
 my $coord = $tile_start;
 while ($coord < $tile_stop + $bin_size) {
     my $bin_start = int($coord/$bin_size) * $bin_size;
-    my $bin_stop = $bin_start + $bin_size - 1;
+    my $bin_stop = $bin_start + $bin_size;
     my $bin = int(($coord - $tile_start + 1) / $bin_size);
     print BED "chr$tile_chr\t$bin_start\t$bin_stop\t$bin\n";
     $coord += $bin_size; 
@@ -339,4 +341,5 @@ sub binary_search {
     #$$counter_hash{"Binary search error: couldn't map read to fragments"}++;
     return ("error", "error")
 }
+
 
